@@ -1,0 +1,106 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "johndoe",
+      "email": "johndoe@example.com",
+      "profileImage": "https://example.com/profiles/johndoe.jpg"
+    },
+    {
+      "id": 2,
+      "username": "janedoe",
+      "email": "janedoe@example.com",
+      "profileImage": "https://example.com/profiles/janedoe.jpg"
+    }
+  ],
+
+  "media": [
+    {
+      "id": 1,
+      "title": "The Simple Path To Wealth",
+      "type": "book",
+      "creator": "JL Collins",
+      "url": "https://www.amazon.com/Simple-Path-Wealth-financial-independence/dp/1533667926"
+    },
+    {
+      "id": 2,
+      "title": "Inception",
+      "type": "movie",
+      "creator": "Christopher Nolan",
+      "url": "https://www.imdb.com/title/tt1375666/"
+    },
+    {
+      "id": 3,
+      "title": "Bohemian Rhapsody",
+      "type": "song",
+      "creator": "Queen",
+      "url": "https://open.spotify.com/track/7tFiyTwD0nx5a1eklYtX2J"
+    }
+  ],
+
+  "emotions": [
+    {
+      "id": 1,
+      "userId": 1,
+      "mediaId": 2,
+      "emotionType": "awe",
+      "description": "The scene where the buildings fold into each other really captured my imagination.",
+      "timestamp": "2024-10-01T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "mediaId": 3,
+      "emotionType": "nostalgia",
+      "description": "This song reminds me of my childhood and brings back fond memories.",
+      "timestamp": "2024-10-02T15:30:00Z"
+    },
+    {
+      "id": 3,
+      "userId": 1,
+      "mediaId": 1,
+      "emotionType": "inspiration",
+      "description": "This book inspired me to take control of my financial future.",
+      "timestamp": "2024-10-03T18:45:00Z"
+    }
+  ],
+
+  "comments": [
+    {
+      "id": 1,
+      "emotionId": 1,
+      "userId": 2,
+      "comment": "I loved that scene too! Nolan's visuals are always stunning.",
+      "timestamp": "2024-10-01T12:00:00Z"
+    },
+    {
+      "id": 2,
+      "emotionId": 2,
+      "userId": 1,
+      "comment": "This song is a classic! So many memories associated with it.",
+      "timestamp": "2024-10-02T16:00:00Z"
+    },
+    {
+      "id": 3,
+      "emotionId": 3,
+      "userId": 2,
+      "comment": "I read that book too; it really changed my perspective on saving and investing.",
+      "timestamp": "2024-10-04T08:30:00Z"
+    }
+  ],
+  
+  "bookmarks": [
+    {
+      "id": 1,
+      "userId": 1,
+      "emotionId": 2,
+      "dateBookmarked": "2024-10-03T14:00:00Z"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "emotionId": 3,
+      "dateBookmarked": "2024-10-04T09:00:00Z"
+    }
+  ]
+}
