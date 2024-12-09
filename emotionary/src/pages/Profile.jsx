@@ -19,12 +19,19 @@ function Profile() {
 
       try {
         const users = await fetchUsers();
+        console.log("Users fetched:", users);
         const emotions = await fetchEmotions();
+        console.log("Emotions fetched:", emotions);
         const bookmarks = await fetchBookmarksByUserId(userId);
+        console.log("Bookmarks fetched for user:", userId, bookmarks);
 
         const currentUser = users.find((u) => u.id === parseInt(userId));
-        const userReactions = emotions.filter((e) => e.userId === parseInt(userId));
-        const userBookmarks = bookmarks.map((b) => emotions.find((e) => e.id === b.emotionId));
+        const userReactions = emotions.filter(
+          (e) => e.userId === parseInt(userId)
+        );
+        const userBookmarks = bookmarks
+          .map((b) => emotions.find((e) => e.id === b.emotionId))
+          .filter(Boolean); // Remove undefined matches
 
         setAllUsers(users);
         setUser(currentUser || null);
@@ -54,7 +61,7 @@ function Profile() {
       <label htmlFor="user-select">Select User: </label>
       <select
         id="user-select"
-        value={userId}
+        value={parseInt(userId) || ""}
         onChange={handleUserChange}
         className="user-select"
       >
