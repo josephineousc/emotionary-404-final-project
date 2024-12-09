@@ -1,18 +1,21 @@
 import React from "react";
 
-export default function ReactionList({ reactions }) {
+function ReactionList({ reactions }) {
+  if (!reactions || reactions.length === 0) {
+    return <p>No reactions found.</p>;
+  }
+
   return (
-    <div>
+    <ul>
       {reactions.map((reaction) => (
-        <div key={reaction.id} className="reaction-item">
-          <h3>{reaction.emotionType}</h3>
+        <li key={reaction.id}>
+          <p><strong>Emotion:</strong> {reaction.emotionType}</p>
           <p>{reaction.description}</p>
-          <small>
-            Submitted by User {reaction.userId} on{" "}
-            {new Date(reaction.timestamp).toLocaleString()}
-          </small>
-        </div>
+          <p><strong>Timestamp:</strong> {new Date(reaction.timestamp).toLocaleString()}</p>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
+
+export default ReactionList;

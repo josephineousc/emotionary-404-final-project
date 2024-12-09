@@ -6,23 +6,22 @@ import Profile from "./pages/Profile";
 import MediaDetail from "./pages/MediaDetail";
 import LogEmotion from "./pages/LogEmotion";
 import About from "./pages/About";
-import ReactionList from "./components/ReactionList";
-
-// Placeholder data for reactions and bookmarks
-const reactions = [
-  { id: 1, content: "This scene was amazing!" },
-  { id: 2, content: "It reminded me of my childhood." },
-];
-const bookmarks = [
-  { id: 1, content: "Saved reaction about Inception." },
-  { id: 2, content: "Saved reaction about a Queen song." },
-];
+import "./App.css";
 
 function App() {
+  const currentUserId = 1; // default to user ID 1
+
   return (
     <Router>
-      <div>
-        <nav>
+      <div className="app-container">
+        {/* App Header */}
+        <header className="app-header">
+          <h1 className="app-title">Emotionary</h1>
+          <p className="app-subtitle">Capture and share your emotional connections with media</p>
+        </header>
+
+        {/* Navigation Bar */}
+        <nav className="app-nav">
           <ul>
             <li>
               <NavLink to="/" end className={({ isActive }) => (isActive ? "active" : "")}>
@@ -35,7 +34,7 @@ function App() {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/profile/1" className={({ isActive }) => (isActive ? "active" : "")}>
+              <NavLink to={`/profile/${currentUserId}`} className={({ isActive }) => (isActive ? "active" : "")}>
                 Profile
               </NavLink>
             </li>
@@ -52,17 +51,28 @@ function App() {
           </ul>
         </nav>
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/profile/:userId" element={<Profile />}>
-            <Route path="reactions" element={<ReactionList reactions={reactions} />} />
-            <Route path="bookmarks" element={<ReactionList reactions={bookmarks} />} />
-          </Route>
-          <Route path="/media/:mediaId" element={<MediaDetail />} />
-          <Route path="/log-emotion" element={<LogEmotion />} />
-          <Route path="/about" element={<About />} />
-        </Routes>
+        {/* App Routes */}
+        <main className="app-main">
+          <Routes>
+            {/* Home Page */}
+            <Route path="/" element={<Home />} />
+
+            {/* Search Page */}
+            <Route path="/search" element={<Search />} />
+
+            {/* User Profile Page */}
+            <Route path="/profile/:userId" element={<Profile />} />
+
+            {/* Media Details Page */}
+            <Route path="/media/:mediaId" element={<MediaDetail />} />
+
+            {/* Log Emotion Page */}
+            <Route path="/log-emotion" element={<LogEmotion />} />
+
+            {/* About Page */}
+            <Route path="/about" element={<About />} />
+          </Routes>
+        </main>
       </div>
     </Router>
   );

@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
 import ReactionList from "../components/ReactionList";
+import { fetchEmotions } from "../api/api";
 
-export default function Home() {
-  const [reactions, setReactions] = useState([]);
+function Home() {
+  const [featuredReactions, setFeaturedReactions] = useState([]);
 
   useEffect(() => {
-    document.title = "Home - Emotionary";
-    fetch("http://localhost:3000/emotions?_expand=media&_expand=user")
-      .then((response) => response.json())
-      .then((data) => setReactions(data))
-      .catch((error) => console.error("Error fetching reactions:", error));
+    fetchEmotions().then((data) => setFeaturedReactions(data.slice(0, 5))); // Fetch top 5 reactions
   }, []);
 
   return (
-    <div>
+    <div className="container">
       <h1>Welcome to Emotionary</h1>
-      <p>Log and share your emotional connections with media.</p>
-      <ReactionList reactions={reactions} />
+      <p>Explore and share your emotional connections to media.</p>
+      <h2>Featured Reactions</h2>
+      <ReactionList reactions={featuredReactions} />
     </div>
   );
 }
+
+export default Home;

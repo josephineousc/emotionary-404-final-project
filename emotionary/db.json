@@ -4,13 +4,13 @@
       "id": 1,
       "username": "johndoe",
       "email": "johndoe@example.com",
-      "profileImage": "https://example.com/profiles/johndoe.jpg"
+      "profileImage": "/profiles/johndoe.png"
     },
     {
       "id": 2,
       "username": "janedoe",
       "email": "janedoe@example.com",
-      "profileImage": "https://example.com/profiles/janedoe.jpg"
+      "profileImage": "/profiles/janedoe.png"
     }
   ],
 

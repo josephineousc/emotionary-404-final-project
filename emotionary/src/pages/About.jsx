@@ -1,17 +1,15 @@
-import React, { useEffect } from "react";
+import React from "react";
 
-export default function About() {
-  useEffect(() => {
-    document.title = "About - Emotionary";
-  }, []);
-
+function About() {
   return (
-    <div>
+    <div className="container">
       <h1>About Emotionary</h1>
       <p>
-        Emotionary is a platform where you can log and share emotional
-        connections to media, such as movies, books, and songs.
+        Emotionary is a platform to share and explore emotional connections with media like movies,
+        songs, and books. Join our community to celebrate the power of storytelling.
       </p>
     </div>
   );
 }
+
+export default About;

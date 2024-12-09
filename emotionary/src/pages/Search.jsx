@@ -1,32 +1,65 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactionList from "../components/ReactionList";
+import { fetchEmotions, fetchMedia } from "../api/api";
 
-export default function Search() {
-  const [query, setQuery] = useState("");
-  const [filteredReactions, setFilteredReactions] = useState([]);
+function Search() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [mediaType, setMediaType] = useState("");
+  const [reactions, setReactions] = useState([]);
+  const [mediaTypes, setMediaTypes] = useState([]);
 
   useEffect(() => {
-    document.title = "Search - Emotionary";
+    async function loadData() {
+      const emotions = await fetchEmotions();
+      const media = await fetchMedia();
+
+      if (emotions && media) {
+        const reactionsWithMedia = emotions.map((reaction) => {
+          const mediaItem = media.find((m) => m.id === reaction.mediaId);
+          return {
+            ...reaction,
+            mediaTitle: mediaItem?.title || "Unknown",
+            mediaType: mediaItem?.type || "Unknown",
+          };
+        });
+
+        setReactions(reactionsWithMedia);
+        setMediaTypes([...new Set(media.map((item) => item.type))]);
+      }
+    }
+    loadData();
   }, []);
 
-  const handleSearch = () => {
-    fetch(`http://localhost:3000/emotions?q=${query}&_expand=media&_expand=user`)
-      .then((response) => response.json())
-      .then((data) => setFilteredReactions(data))
-      .catch((error) => console.error("Error fetching search results:", error));
-  };
+  const filteredReactions = reactions.filter((reaction) =>
+    (reaction.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      reaction.mediaTitle.toLowerCase().includes(searchTerm.toLowerCase())) &&
+    (!mediaType || reaction.mediaType === mediaType)
+  );
 
   return (
-    <div>
+    <div className="container">
       <h1>Search Reactions</h1>
       <input
         type="text"
-        placeholder="Search by keyword..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Search by keywords or media title..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <button onClick={handleSearch}>Search</button>
-      <ReactionList reactions={filteredReactions} />
+      <select value={mediaType} onChange={(e) => setMediaType(e.target.value)}>
+        <option value="">All Media Types</option>
+        {mediaTypes.map((type) => (
+          <option key={type} value={type}>
+            {type}
+          </option>
+        ))}
+      </select>
+      {filteredReactions.length > 0 ? (
+        <ReactionList reactions={filteredReactions} />
+      ) : (
+        <p>No reactions found.</p>
+      )}
     </div>
   );
 }
+
+export default Search;
