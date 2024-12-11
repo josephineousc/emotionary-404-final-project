@@ -33,7 +33,6 @@
       "mediaTitle": "Mountainscape",
       "thumbnailUrl": "https://example.com/thumbnails/mountainscape.jpg"
     }
-    
   ],
   "comments": [
     {
@@ -51,20 +50,7 @@
       "timestamp": "2024-10-02T16:00:00Z"
     }
   ],
-  "bookmarks": [
-    {
-      "id": "1",
-      "userId": 1,
-      "emotionId": 2,
-      "dateBookmarked": "2024-10-03T10:00:00Z"
-    },
-    {
-      "id": "2",
-      "userId": 2,
-      "emotionId": 1,
-      "dateBookmarked": "2024-10-04T11:30:00Z"
-    }
-  ],
+  "bookmarks": [],
   "users": [
     {
       "id": "1",

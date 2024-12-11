@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, NavLink } from "react-router-do
 import { ToastContainer } from 'react-toastify';
 import Home from "./pages/Home";
 import About from "./pages/About";
+import Library from "./pages/Library";
 import 'react-toastify/dist/ReactToastify.css';
 import "./App.css";
 
@@ -59,6 +60,11 @@ function App() {
               <li>
                 <NavLink to="/about">
                   About
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/library">
+                  Library
                 </NavLink>
               </li>
             </ul>
@@ -123,6 +129,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home filter={selectedFilter} />} />
             <Route path="/about" element={<About />} />
+            <Route path="/library" element={<Library />} />
           </Routes>
         </main>
       </div>

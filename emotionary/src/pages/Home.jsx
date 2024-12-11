@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 
 function Home({ filter }) {
   const [emotions, setEmotions] = useState([]);
+  const [bookmarks, setBookmarks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -14,35 +15,32 @@ function Home({ filter }) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log('Fetched data:', data); // Debug log
         setEmotions(data);
       } catch (error) {
-        console.error('Error details:', error); // Debug log
+        console.error("Error details:", error);
         setError(error.message);
-        toast.error('Failed to load emotions. Please make sure the server is running.');
+        toast.error("Failed to load emotions. Please make sure the server is running.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchEmotions();
-  }, []);
-
-  const handleDelete = async (id) => {
-    try {
-      const response = await fetch(`http://localhost:4000/emotions/${id}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    const fetchBookmarks = async () => {
+      try {
+        const response = await fetch('http://localhost:4000/bookmarks');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setBookmarks(data.map((bookmark) => bookmark.emotionId)); // Extract emotionIds
+      } catch (error) {
+        console.error("Error fetching bookmarks:", error);
       }
-      setEmotions(emotions.filter(emotion => emotion.id !== id));
-      toast.success('Deleted successfully!');
-    } catch (err) {
-      toast.error('Failed to delete');
-      console.error('Delete error:', err);
-    }
-  };
+    };
+
+    fetchEmotions();
+    fetchBookmarks();
+  }, []);
 
   const handleSave = async (emotion) => {
     try {
@@ -54,21 +52,68 @@ function Home({ filter }) {
         body: JSON.stringify({
           userId: 1,
           emotionId: emotion.id,
-          dateBookmarked: new Date().toISOString()
+          dateBookmarked: new Date().toISOString(),
         }),
       });
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      toast.success('Saved to library!');
+
+      setBookmarks((prev) => [...prev, emotion.id]); // Add emotionId to bookmarks
+      toast.success("Saved to library!");
     } catch (err) {
-      toast.error('Failed to save');
-      console.error('Save error:', err);
+      toast.error("Failed to save");
+      console.error("Save error:", err);
     }
   };
 
-  const filteredEmotions = emotions.filter(emotion => 
-    filter === 'All' || emotion.media === filter
+  const handleUnsave = async (emotionId) => {
+    try {
+      const bookmarkId = await fetch(`http://localhost:4000/bookmarks?emotionId=${emotionId}`)
+        .then((res) => res.json())
+        .then((data) => data[0]?.id);
+
+      if (!bookmarkId) {
+        throw new Error("Bookmark not found");
+      }
+
+      const response = await fetch(`http://localhost:4000/bookmarks/${bookmarkId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      setBookmarks((prev) => prev.filter((id) => id !== emotionId)); // Remove emotionId from bookmarks
+      toast.success("Removed from library!");
+    } catch (err) {
+      toast.error("Failed to remove");
+      console.error("Remove error:", err);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:4000/emotions/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      setEmotions((prev) => prev.filter((emotion) => emotion.id !== id)); // Remove from emotions
+      toast.success("Deleted successfully!");
+    } catch (err) {
+      toast.error("Failed to delete");
+      console.error("Delete error:", err);
+    }
+  };
+
+  const filteredEmotions = emotions.filter(
+    (emotion) => filter === 'All' || emotion.media === filter
   );
 
   if (loading) return <div className="content">Loading...</div>;
@@ -77,31 +122,34 @@ function Home({ filter }) {
   return (
     <div className="card-grid">
       {filteredEmotions.length > 0 ? (
-        filteredEmotions.map(emotion => (
+        filteredEmotions.map((emotion) => (
           <div key={emotion.id} className="card">
             <div className="card-content">
               <h3>{emotion.mediaTitle || emotion.title}</h3>
-              {emotion.emotionType && (
-                <p className="emotion-type">{emotion.emotionType}</p>
-              )}
+              {emotion.emotionType && <p className="emotion-type">{emotion.emotionType}</p>}
               <p className="description">{emotion.description}</p>
-              {emotion.rating && (
-                <p className="rating">Rating: {emotion.rating}/5</p>
-              )}
+              {emotion.rating && <p className="rating">Rating: {emotion.rating}/5</p>}
               {emotion.timestamp && (
-                <p className="timestamp">
-                  {new Date(emotion.timestamp).toLocaleDateString()}
-                </p>
+                <p className="timestamp">{new Date(emotion.timestamp).toLocaleDateString()}</p>
               )}
               <div className="card-buttons">
-                <button 
-                  onClick={() => handleSave(emotion)} 
-                  className="save-button"
-                >
-                  SAVE
-                </button>
-                <button 
-                  onClick={() => handleDelete(emotion.id)} 
+                {bookmarks.includes(emotion.id) ? (
+                  <button
+                    onClick={() => handleUnsave(emotion.id)}
+                    className="unsave-button"
+                  >
+                    UNSAVE
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleSave(emotion)}
+                    className="save-button"
+                  >
+                    SAVE
+                  </button>
+                )}
+                <button
+                  onClick={() => handleDelete(emotion.id)}
                   className="delete-button"
                 >
                   DELETE
