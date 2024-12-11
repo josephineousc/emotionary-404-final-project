@@ -69,6 +69,13 @@ function Library() {
                     {new Date(emotion.timestamp).toLocaleDateString()}
                   </p>
                 )}
+                {emotion.url && (
+                  <p className="url">
+                    <a href={emotion.url} target="_blank" rel="noopener noreferrer">
+                      View More
+                    </a>
+                  </p>
+                )}
               </div>
             </div>
           );

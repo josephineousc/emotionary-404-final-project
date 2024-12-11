@@ -6,6 +6,7 @@ import About from "./pages/About";
 import Library from "./pages/Library";
 import 'react-toastify/dist/ReactToastify.css';
 import "./App.css";
+import { toast } from "react-toastify";
 
 function App() {
   const [selectedFilter, setSelectedFilter] = useState('All');
@@ -25,11 +26,61 @@ function App() {
     setNewEmotion({ ...newEmotion, [name]: value });
   };
 
-  const handleAddEmotion = (e) => {
+  const handleAddEmotion = async (e) => {
     e.preventDefault();
-    // We'll implement this later
-    console.log("New emotion:", newEmotion);
-  };
+  
+    if (
+      !newEmotion.title ||
+      !newEmotion.media ||
+      !newEmotion.url ||
+      !newEmotion.timestamp ||
+      !newEmotion.rating ||
+      !newEmotion.description
+    ) {
+      toast.error("Please fill out all fields.");
+      return;
+    }
+  
+    const newEmotionData = {
+      id: crypto.randomUUID(), // Generate a unique ID
+      userId: 1, // Assuming a default user
+      media: newEmotion.media,
+      emotionType: "undefined", // Add a default or user-defined type if needed
+      description: newEmotion.description,
+      timestamp: newEmotion.timestamp,
+      rating: parseInt(newEmotion.rating, 10), // Convert rating to a number
+      mediaTitle: newEmotion.title,
+      thumbnailUrl: "https://example.com/default-thumbnail.jpg", // Default thumbnail
+      url: newEmotion.url,
+    };
+  
+    try {
+      const response = await fetch("http://localhost:4000/emotions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newEmotionData),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      toast.success("Emotion added successfully!");
+      setNewEmotion({
+        title: "",
+        media: "",
+        url: "",
+        timestamp: "",
+        rating: "",
+        description: "",
+      });
+    } catch (error) {
+      console.error("Error adding emotion:", error);
+      toast.error("Failed to add emotion.");
+    }
+  };  
 
   return (
     <Router>

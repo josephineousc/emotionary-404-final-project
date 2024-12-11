@@ -9,7 +9,8 @@
       "timestamp": "2024-10-01T10:00:00Z",
       "rating": 4,
       "mediaTitle": "Inception",
-      "thumbnailUrl": "https://example.com/thumbnails/inception.jpg"
+      "thumbnailUrl": "https://example.com/thumbnails/inception.jpg",
+      "url": "https://en.wikipedia.org/wiki/Inception"
     },
     {
       "id": "2",
@@ -20,7 +21,8 @@
       "timestamp": "2024-10-02T15:30:00Z",
       "rating": 5,
       "mediaTitle": "Bohemian Rhapsody",
-      "thumbnailUrl": "https://example.com/thumbnails/bohemian-rhapsody.jpg"
+      "thumbnailUrl": "https://example.com/thumbnails/bohemian-rhapsody.jpg",
+      "url": "https://en.wikipedia.org/wiki/Inception"
     },
     {
       "id": "3",
@@ -31,7 +33,8 @@
       "timestamp": "2024-10-03T14:00:00Z",
       "rating": 5,
       "mediaTitle": "Mountainscape",
-      "thumbnailUrl": "https://example.com/thumbnails/mountainscape.jpg"
+      "thumbnailUrl": "https://example.com/thumbnails/mountainscape.jpg",
+      "url": "https://en.wikipedia.org/wiki/Inception"
     }
   ],
   "comments": [

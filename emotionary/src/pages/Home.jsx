@@ -132,6 +132,13 @@ function Home({ filter }) {
               {emotion.timestamp && (
                 <p className="timestamp">{new Date(emotion.timestamp).toLocaleDateString()}</p>
               )}
+              {emotion.url && (
+                <p className="url">
+                  <a href={emotion.url} target="_blank" rel="noopener noreferrer">
+                    View More
+                  </a>
+                </p>
+              )}
               <div className="card-buttons">
                 {bookmarks.includes(emotion.id) ? (
                   <button
