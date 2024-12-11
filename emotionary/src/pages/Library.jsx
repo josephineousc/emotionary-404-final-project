@@ -72,7 +72,7 @@ function Library() {
                 {emotion.url && (
                   <p className="url">
                     <a href={emotion.url} target="_blank" rel="noopener noreferrer">
-                      View More
+                      View URL
                     </a>
                   </p>
                 )}
