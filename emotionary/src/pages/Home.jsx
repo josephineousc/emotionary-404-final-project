@@ -30,7 +30,7 @@ function Home({ filter }) {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/emotions/${id}`, {
+      const response = await fetch(`http://localhost:4000/emotions/${id}`, {
         method: 'DELETE',
       });
       if (!response.ok) {
@@ -46,7 +46,7 @@ function Home({ filter }) {
 
   const handleSave = async (emotion) => {
     try {
-      const response = await fetch('http://localhost:3000/bookmarks', {
+      const response = await fetch('http://localhost:4000/bookmarks', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
