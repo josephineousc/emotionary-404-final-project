@@ -1,73 +1,75 @@
-const API_BASE_URL = "http://localhost:4000";
+const BASE_URL = 'http://localhost:3000';
 
-// Generic fetch handler
-async function fetchData(url) {
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const data = await response.json();
-    return data
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return null;
-  }
-}
+export const fetchEmotions = async () => {
+  const response = await fetch(`${BASE_URL}/emotions`);
+  if (!response.ok) throw new Error('Failed to fetch emotions');
+  return response.json();
+};
 
-// USERS
-export async function fetchUsers() {
-  return fetchData(`${API_BASE_URL}/users`);
-}
+export const createEmotion = async (emotionData) => {
+  const response = await fetch(`${BASE_URL}/emotions`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      ...emotionData,
+      timestamp: new Date().toISOString(),
+    }),
+  });
+  if (!response.ok) throw new Error('Failed to create emotion');
+  return response.json();
+};
 
-// MEDIA
-export async function fetchMedia() {
-  return fetchData(`${API_BASE_URL}/media`);
-}
+export const deleteEmotion = async (id) => {
+  const response = await fetch(`${BASE_URL}/emotions/${id}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) throw new Error('Failed to delete emotion');
+};
 
-export async function fetchMediaById(mediaId) {
-  return fetchData(`${API_BASE_URL}/media/${mediaId}`);
-}
+export const updateEmotion = async (id, updates) => {
+  const response = await fetch(`${BASE_URL}/emotions/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(updates),
+  });
+  if (!response.ok) throw new Error('Failed to update emotion');
+  return response.json();
+};
 
-// EMOTIONS
-export async function fetchEmotions() {
-  return fetchData(`${API_BASE_URL}/emotions`);
-}
+export const saveEmotion = async (userId, emotionId) => {
+  const response = await fetch(`${BASE_URL}/bookmarks`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      userId,
+      emotionId,
+      timestamp: new Date().toISOString(),
+    }),
+  });
+  if (!response.ok) throw new Error('Failed to save emotion');
+  return response.json();
+};
 
-export async function createEmotion(emotion) {
-  try {
-    const response = await fetch(`${API_BASE_URL}/emotions`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(emotion),
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("Error creating emotion:", error);
-    return null;
-  }
-}
+export const getSavedEmotions = async (userId) => {
+  const response = await fetch(`${BASE_URL}/bookmarks?userId=${userId}&_expand=emotion`);
+  if (!response.ok) throw new Error('Failed to fetch saved emotions');
+  return response.json();
+};
 
-// COMMENTS
-export async function fetchCommentsByEmotionId(emotionId) {
-  return fetchData(`${API_BASE_URL}/comments?emotionId=${emotionId}`);
-}
+export const getMedia = async () => {
+  const response = await fetch(`${BASE_URL}/media`);
+  if (!response.ok) throw new Error('Failed to fetch media');
+  return response.json();
+};
 
-// BOOKMARKS
-export async function fetchBookmarksByUserId(userId) {
-  try {
-    const response = await fetch(`${API_BASE_URL}/bookmarks?userId=${userId}`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("Error fetching bookmarks:", error);
-    return [];
-  }
-}
+export const getMediaById = async (id) => {
+  const response = await fetch(`${BASE_URL}/media/${id}`);
+  if (!response.ok) throw new Error('Failed to fetch media');
+  return response.json();
+};
